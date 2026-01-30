@@ -314,6 +314,15 @@ func TestParseOptions(t *testing.T) {
 				c.generateRpcSamples = true
 			},
 		},
+		{
+			Format: "protobuf",
+			Options: map[string]string{
+				"internal-builder": "true",
+			},
+			Update: func(c *codec) {
+				c.internalBuilder = true
+			},
+		},
 	} {
 		want, err := newCodec(test.Format, map[string]string{})
 		if err != nil {

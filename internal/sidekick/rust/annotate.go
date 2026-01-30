@@ -77,6 +77,8 @@ type modelAnnotations struct {
 	// If true, the generated code includes detailed tracing attributes on HTTP
 	// requests.
 	DetailedTracingAttributes bool
+	// If true, generated request builders will have pub(crate) visibility.
+	InternalBuilder bool
 }
 
 // IsWktCrate returns true when bootstrapping the well-known types crate the templates add some
@@ -662,6 +664,7 @@ func annotateModel(model *api.API, codec *codec) *modelAnnotations {
 		GenerateSetterSamples:     codec.generateSetterSamples,
 		GenerateRpcSamples:        codec.generateRpcSamples,
 		DetailedTracingAttributes: codec.detailedTracingAttributes,
+		InternalBuilder:           codec.internalBuilder,
 	}
 
 	codec.addFeatureAnnotations(model, ann)

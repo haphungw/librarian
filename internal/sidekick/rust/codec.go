@@ -172,12 +172,12 @@ func newCodec(specificationFormat string, options map[string]string) (*codec, er
 				return nil, fmt.Errorf("cannot convert `generate-rpc-samples` value %q to boolean: %w", definition, err)
 			}
 			codec.generateRpcSamples = value
-		case key == "internal-builders":
+		case key == "internal-builder":
 			value, err := strconv.ParseBool(definition)
 			if err != nil {
-				return nil, fmt.Errorf("cannot convert `internal-builders` value %q to boolean: %w", definition, err)
+				return nil, fmt.Errorf("cannot convert `internal-builder` value %q to boolean: %w", definition, err)
 			}
-			codec.internalBuilders = value
+			codec.internalBuilder = value
 		default:
 			return nil, fmt.Errorf("unknown Rust codec option %q", key)
 		}
@@ -325,7 +325,7 @@ type codec struct {
 	// If true, the generator will produce reference documentation samples for functions that correspond to RPCs.
 	generateRpcSamples bool
 	// If true, generated request builders will have pub(crate) visibility.
-	internalBuilders bool
+	internalBuilder bool
 }
 
 type systemParameter struct {
@@ -1487,13 +1487,6 @@ func (c *codec) generateMethod(m *api.Method) bool {
 		return false
 	}
 	return m.PathInfo.Bindings[0].PathTemplate != nil
-}
-
-// escapeKeyword is the list of Rust keywords and reserved words can be found
-// at https://doc.rust-lang.org/reference/keywords.html.
-// InternalBuilders returns true if the generated request builders should have pub(crate) visibility.
-func (c *codec) InternalBuilders() bool {
-	return c.internalBuilders
 }
 
 func escapeKeyword(symbol string) string {

@@ -65,6 +65,9 @@ func fillRust(lib *config.Library, d *config.Default) *config.Library {
 		if mod.GenerateRpcSamples == "" {
 			mod.GenerateRpcSamples = lib.Rust.GenerateRpcSamples
 		}
+		if !mod.InternalBuilder {
+			mod.InternalBuilder = lib.Rust.InternalBuilder
+		}
 	}
 	return lib
 }

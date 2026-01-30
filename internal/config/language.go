@@ -45,6 +45,9 @@ type RustDefault struct {
 
 	// GenerateRpcSamples indicates whether to generate RPC samples.
 	GenerateRpcSamples string `yaml:"generate_rpc_samples,omitempty"`
+
+	// InternalBuilder indicates whether the builders should be exposed publicly.
+	InternalBuilder bool `yaml:"internal_builder,omitempty"`
 }
 
 // RustModule defines a generation target within a veneer crate.

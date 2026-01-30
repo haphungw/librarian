@@ -77,8 +77,8 @@ pub mod {{Codec.ModuleName}} {
 
     {{#Codec.Methods}}
     /// The request builder for [{{Codec.ServiceNameToPascal}}::{{Codec.NameNoMangling}}][crate::client::{{Codec.ServiceNameToPascal}}::{{Codec.NameNoMangling}}] calls.
+    {{^Model.Codec.InternalBuilder}}
     ///
-{{^Model.Codec.InternalBuilders}}
     /// # Example
     /// ```
     /// # use {{Model.Codec.PackageNamespace}}::builder::{{Service.Codec.ModuleName}}::{{Codec.BuilderName}};
@@ -112,9 +112,9 @@ pub mod {{Codec.ModuleName}} {
     ///   // ... details omitted ...
     /// }
     /// ```
-{{/Model.Codec.InternalBuilders}}
+    {{/Model.Codec.InternalBuilder}}
     #[derive(Clone, Debug)]
-    {{#Model.Codec.InternalBuilders}}pub(crate){{/Model.Codec.InternalBuilders}}{{^Model.Codec.InternalBuilders}}pub{{/Model.Codec.InternalBuilders}} struct {{Codec.BuilderName}}(RequestBuilder<{{InputType.Codec.QualifiedName}}>);
+    {{#Model.Codec.InternalBuilder}}pub(crate){{/Model.Codec.InternalBuilder}}{{^Model.Codec.InternalBuilder}}pub{{/Model.Codec.InternalBuilder}} struct {{Codec.BuilderName}}(RequestBuilder<{{InputType.Codec.QualifiedName}}>);
 
     impl {{Codec.BuilderName}} {
         pub(crate) fn new(stub: std::sync::Arc<dyn super::super::stub::dynamic::{{Codec.ServiceNameToPascal}}>) -> Self {

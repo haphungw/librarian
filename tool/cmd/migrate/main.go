@@ -205,6 +205,8 @@ func readRootSidekick(repoPath string) (*config.Config, error) {
 				PackageDependencies:     packageDependencies,
 				DisabledRustdocWarnings: strToSlice(warnings, false),
 				GenerateSetterSamples:   generateSetterSamples,
+				GenerateRpcSamples:      sidekick.Codec["generate-rpc-samples"],
+				InternalBuilder:         strToBool(sidekick.Codec["internal-builder"]),
 			},
 		},
 	}
@@ -384,6 +386,7 @@ func buildGAPIC(files []string, repoPath string) (map[string]*config.Library, er
 		postProcessProtos := sidekick.Codec["post-process-protos"]
 		detailedTracingAttributes := sidekick.Codec["detailed-tracing-attributes"]
 		nameOverrides := sidekick.Codec["name-overrides"]
+		internalBuilder := sidekick.Codec["internal-builder"]
 
 		// Parse package dependencies
 		packageDeps := parsePackageDependencies(sidekick.Codec)
@@ -418,6 +421,7 @@ func buildGAPIC(files []string, repoPath string) (map[string]*config.Library, er
 				DisabledRustdocWarnings: strToSlice(disabledRustdocWarnings, false),
 				GenerateSetterSamples:   generateSetterSamples,
 				GenerateRpcSamples:      generateRpcSamples,
+				InternalBuilder:         strToBool(internalBuilder),
 			},
 			PerServiceFeatures:        strToBool(perServiceFeatures),
 			ModulePath:                modulePath,
@@ -603,6 +607,7 @@ func buildModules(rootDir string, repoPath string) ([]*config.RustModule, error)
 		postProcessProtos := sidekick.Codec["post-process-protos"]
 		templateOverride := sidekick.Codec["template-override"]
 		generateSetterSamples := sidekick.Codec["generate-setter-samples"]
+		internalBuilder := sidekick.Codec["internal-builder"]
 
 		// Parse documentation overrides
 		var documentationOverrides []config.RustDocumentationOverride
@@ -624,6 +629,7 @@ func buildModules(rootDir string, repoPath string) ([]*config.RustModule, error)
 			IncludedIds:            strToSlice(includedIds, false),
 			IncludeGrpcOnlyMethods: strToBool(includeGrpcOnlyMethods),
 			IncludeList:            includeList,
+			InternalBuilder:        strToBool(internalBuilder),
 			ModulePath:             modulePath,
 			NameOverrides:          nameOverrides,
 			Output:                 relativePath,
