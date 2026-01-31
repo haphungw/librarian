@@ -153,9 +153,6 @@ func buildCodec(library *config.Library) map[string]string {
 	if rust.GenerateRpcSamples != "" {
 		codec["generate-rpc-samples"] = rust.GenerateRpcSamples
 	}
-	if rust.InternalBuilder {
-		codec["internal-builder"] = "true"
-	}
 	if rust.NameOverrides != "" {
 		codec["name-overrides"] = rust.NameOverrides
 	}

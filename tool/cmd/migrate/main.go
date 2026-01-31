@@ -205,8 +205,6 @@ func readRootSidekick(repoPath string) (*config.Config, error) {
 				PackageDependencies:     packageDependencies,
 				DisabledRustdocWarnings: strToSlice(warnings, false),
 				GenerateSetterSamples:   generateSetterSamples,
-				GenerateRpcSamples:      sidekick.Codec["generate-rpc-samples"],
-				InternalBuilder:         strToBool(sidekick.Codec["internal-builder"]),
 			},
 		},
 	}
@@ -386,7 +384,6 @@ func buildGAPIC(files []string, repoPath string) (map[string]*config.Library, er
 		postProcessProtos := sidekick.Codec["post-process-protos"]
 		detailedTracingAttributes := sidekick.Codec["detailed-tracing-attributes"]
 		nameOverrides := sidekick.Codec["name-overrides"]
-		internalBuilder := sidekick.Codec["internal-builder"]
 
 		// Parse package dependencies
 		packageDeps := parsePackageDependencies(sidekick.Codec)
@@ -421,7 +418,6 @@ func buildGAPIC(files []string, repoPath string) (map[string]*config.Library, er
 				DisabledRustdocWarnings: strToSlice(disabledRustdocWarnings, false),
 				GenerateSetterSamples:   generateSetterSamples,
 				GenerateRpcSamples:      generateRpcSamples,
-				InternalBuilder:         strToBool(internalBuilder),
 			},
 			PerServiceFeatures:        strToBool(perServiceFeatures),
 			ModulePath:                modulePath,
