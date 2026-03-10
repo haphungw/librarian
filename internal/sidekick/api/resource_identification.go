@@ -52,21 +52,10 @@ func identifyTargetResourceForBinding(method *Method, binding *PathBinding, voca
 		return nil
 	}
 
-	// Priority 1: Explicit Identification
-	// Matches google.api.resource_reference annotations.
-	target, err := identifyExplicitTarget(method, binding)
-	if err != nil {
-		return err
-	}
-	if target != nil {
-		binding.TargetResource = target
-		return nil
-	}
-
-	// Priority 2: Heuristic Identification
+	// Priority 1: Heuristic Identification
 	// Uses path segment patterns to guess the resource.
 	if enableHeuristics {
-		target, err = identifyHeuristicTarget(method, binding, vocabulary)
+		target, err := identifyHeuristicTarget(method, binding, vocabulary)
 		if err != nil {
 			return err
 		}
@@ -158,45 +147,6 @@ func identifyHeuristicTarget(method *Method, binding *PathBinding, vocabulary ma
 		}, nil
 	}
 	return nil, nil
-}
-
-func identifyExplicitTarget(method *Method, binding *PathBinding) (*TargetResource, error) {
-	var fieldPaths [][]string
-	if method.InputType == nil {
-		return nil, fmt.Errorf("consistency error: method %q has no InputType", method.Name)
-	}
-
-	// Collect field paths corresponding to variable segments in the path template
-	for _, segment := range binding.PathTemplate.Segments {
-		if segment.Variable == nil {
-			continue
-		}
-
-		fieldPath := segment.Variable.FieldPath
-		field, err := findField(method.InputType, fieldPath)
-		if err != nil {
-			return nil, err
-		}
-		if field == nil {
-			return nil, fmt.Errorf("consistency error: field %v not found in message %q", fieldPath, method.InputType.Name)
-		}
-		if !field.IsResourceReference() {
-			return nil, nil
-		}
-		fieldPaths = append(fieldPaths, fieldPath)
-	}
-
-	if len(fieldPaths) == 0 {
-		return nil, nil
-	}
-	template, err := constructTemplate(method, binding.PathTemplate.Segments)
-	if err != nil {
-		return nil, err
-	}
-	return &TargetResource{
-		FieldPaths: fieldPaths,
-		Template:   template,
-	}, nil
 }
 
 // findField traverses the (nested) message structure to find a field by its field path.
