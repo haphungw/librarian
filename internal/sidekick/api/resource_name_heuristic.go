@@ -14,23 +14,37 @@
 
 package api
 
-import "strings"
+import (
+	"fmt"
+	"strings"
+)
 
 // eligibleServices defines the service IDs (Protobuf package names) that are eligible for the gated heuristic.
 var eligibleServices = map[string]bool{
 	".google.cloud.compute":  true,
 	".google.cloud.sql":      true,
 	".google.cloud.bigquery": true,
+	".google.cloud.dns":      true,
 }
 
 // IsHeuristicEligible returns true if the given service ID is in the allowlist for the resource name heuristic.
-func IsHeuristicEligible(serviceID string) bool {
+func IsHeuristicEligible(serviceID string, packageName string) bool {
+	if strings.HasPrefix(serviceID, "..") && packageName != "" {
+		serviceID = "." + packageName + "." + strings.TrimPrefix(serviceID, "..")
+	} else if strings.HasPrefix(serviceID, "..") && packageName == "" {
+		// Discovery docs often lack package names early in the generation process.
+		// Fallback to DNS since we know this is an issue primarily for DNS discovery.
+		serviceID = ".google.cloud.dns." + strings.TrimPrefix(serviceID, "..")
+	}
+
 	parts := strings.Split(serviceID, ".")
 	if len(parts) >= 4 {
 		// Extract the service prefix (e.g., ".google.cloud.compute.v1")
 		prefix := strings.Join(parts[:4], ".")
+		fmt.Printf("Service %s -> prefix %s, eligible=%v\n", serviceID, prefix, eligibleServices[prefix])
 		return eligibleServices[prefix]
 	}
+	fmt.Printf("Service %s less than 4 parts\n", serviceID)
 	return false
 }
 
@@ -66,6 +80,7 @@ func BuildHeuristicVocabulary(model *API) map[string]bool {
 
 	for _, service := range model.Services {
 		for _, m := range service.Methods {
+			fmt.Printf("Method: %s\n", m.Name)
 			nameLower := strings.ToLower(m.Name)
 
 			var isCRUDPrefix bool
@@ -118,5 +133,6 @@ func BuildHeuristicVocabulary(model *API) map[string]bool {
 			}
 		}
 	}
+	fmt.Printf("Vocabulary built: %v\n", tokens)
 	return tokens
 }
