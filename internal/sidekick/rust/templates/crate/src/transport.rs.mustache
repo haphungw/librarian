@@ -132,8 +132,7 @@ impl super::stub::{{Codec.Name}} for {{Codec.Name}} {
                 {{#Codec.ResourceNameArgs}}
                 {{{.}}},
                 {{/Codec.ResourceNameArgs}}
-            );
-            {{/Codec.HasResourceNameGeneration}}
+            );{{/Codec.HasResourceNameGeneration}}
             let builder = self.inner.builder(Method::{{Verb}}, path);
             {{#Codec.QueryParamsCanFail}}
             let builder = (|| {
