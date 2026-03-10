@@ -79,7 +79,7 @@ func identifyTargetResourceForBinding(method *Method, binding *PathBinding, voca
 }
 
 func identifyHeuristicTarget(method *Method, binding *PathBinding, vocabulary map[string]bool) (*TargetResource, error) {
-	if !IsHeuristicEligible(method.Service.ID) {
+	if !IsHeuristicEligible(method.Service.ID, method.Service.Package) {
 		return nil, nil
 	}
 

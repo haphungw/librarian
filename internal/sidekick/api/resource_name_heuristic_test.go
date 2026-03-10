@@ -83,7 +83,7 @@ func TestIsResourceRenameHeuristicEligible(t *testing.T) {
 		},
 	} {
 		t.Run(test.name, func(t *testing.T) {
-			got := IsHeuristicEligible(test.serviceID)
+			got := IsHeuristicEligible(test.serviceID, "")
 			if diff := cmp.Diff(test.want, got); diff != "" {
 				t.Errorf("IsHeuristicEligible(%q) mismatch (-want +got):\n%s", test.serviceID, diff)
 			}
