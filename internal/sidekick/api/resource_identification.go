@@ -148,6 +148,7 @@ func identifyHeuristicTarget(method *Method, binding *PathBinding, vocabulary ma
 	return nil, nil
 }
 
+
 // findField traverses the (nested) message structure to find a field by its field path.
 func findField(msg *Message, path []string) (*Field, error) {
 	if len(path) == 0 {
