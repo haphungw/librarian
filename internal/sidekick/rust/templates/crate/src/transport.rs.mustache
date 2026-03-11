@@ -126,12 +126,17 @@ impl super::stub::{{Codec.Name}} for {{Codec.Name}} {
             let path_template = "{{Codec.PathTemplate}}";
             {{/Codec.DetailedTracingAttributes}}
             {{#Codec.HasResourceNameGeneration}}
+            {{#Codec.HasResourceNameArgs}}
             let resource_name = format!(
                 "{{{Codec.ResourceNameTemplate}}}",
                 {{#Codec.ResourceNameArgs}}
                 {{{.}}},
                 {{/Codec.ResourceNameArgs}}
             );
+            {{/Codec.HasResourceNameArgs}}
+            {{^Codec.HasResourceNameArgs}}
+            let resource_name = "{{{Codec.ResourceNameTemplate}}}".to_string();
+            {{/Codec.HasResourceNameArgs}}
             {{/Codec.HasResourceNameGeneration}}
             let builder = self.inner.builder(Method::{{Verb}}, path);
             {{#Codec.QueryParamsCanFail}}
@@ -200,9 +205,14 @@ impl super::stub::{{Codec.Name}} for {{Codec.Name}} {
             {{^Codec.HasResourceNameFields}}
             {{#Codec.HasResourceNameGeneration}}
             let options = {
+                {{#Codec.HasResourceNameArgs}}
                 let resource_name = format!("//{{DefaultHost}}{{{Codec.ResourceNameTemplate}}}"
                     {{#Codec.ResourceNameArgs}}, {{{.}}}{{/Codec.ResourceNameArgs}}
                 );
+                {{/Codec.HasResourceNameArgs}}
+                {{^Codec.HasResourceNameArgs}}
+                let resource_name = "//{{DefaultHost}}{{{Codec.ResourceNameTemplate}}}".to_string();
+                {{/Codec.HasResourceNameArgs}}
                 if !resource_name.is_empty() && resource_name != "//{{DefaultHost}}/" {
                     use google_cloud_gax::options::internal::ResourceName;
                     options.insert_extension(ResourceName(resource_name))
