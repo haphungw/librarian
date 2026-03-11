@@ -46,7 +46,6 @@ func setupTestModel(serviceID string, pathTemplate *PathTemplate, fields []*Fiel
 	return model, binding
 }
 
-
 func TestIdentifyTargetResources_Heuristic(t *testing.T) {
 	for _, test := range []struct {
 		name      string
