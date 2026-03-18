@@ -55,7 +55,7 @@ func TestOpenAPI_AllOf(t *testing.T) {
         "required": [
           "kmsKeyName"
         ]
-      },
+      }
 `
 	contents := []byte(openAPISingleMessagePreamble + messageWithAllOf + openAPISingleMessageTrailer)
 	model, err := createDocModel(contents)
@@ -106,7 +106,7 @@ func TestOpenAPI_BasicTypes(t *testing.T) {
             "fSInt64", "fSUInt64",
             "fDuration", "fTimestamp", "fFieldMask", "fBytes"
         ]
-      },
+      }
 `
 	contents := []byte(openAPISingleMessagePreamble + messageWithBasicTypes + openAPISingleMessageTrailer)
 	model, err := createDocModel(contents)
@@ -237,9 +237,9 @@ func TestOpenAPI_ArrayTypes(t *testing.T) {
           "fDuration":  { "type": "array", "items": { "type": "string", "format": "google-duration" }},
           "fTimestamp": { "type": "array", "items": { "type": "string", "format": "date-time" }},
           "fFieldMask": { "type": "array", "items": { "type": "string", "format": "google-fieldmask" }},
-          "fBytes":     { "type": "array", "items": { "type": "string", "format": "byte" }},
+          "fBytes":     { "type": "array", "items": { "type": "string", "format": "byte" }}
         }
-      },
+      }
 `
 	contents := []byte(openAPISingleMessagePreamble + messageWithBasicTypes + openAPISingleMessageTrailer)
 	model, err := createDocModel(contents)
@@ -342,7 +342,7 @@ func TestOpenAPI_SimpleObject(t *testing.T) {
         "type": "object",
         "properties": {
           "fObject"     : { "type": "object", "description": "An object field.", "allOf": [{ "$ref": "#/components/schemas/Foo" }] },
-          "fObjectArray": { "type": "array",  "description": "An object array field.", "items": [{ "$ref": "#/components/schemas/Bar" }] }
+          "fObjectArray": { "type": "array",  "description": "An object array field.", "items": { "$ref": "#/components/schemas/Bar" } }
         }
       },
       "Foo": {
@@ -354,7 +354,7 @@ func TestOpenAPI_SimpleObject(t *testing.T) {
         "description": "Must have a Bar.",
         "type": "object",
         "properties": {}
-      },
+      }
 `
 	contents := []byte(openAPISingleMessagePreamble + messageWithBasicTypes + openAPISingleMessageTrailer)
 	model, err := createDocModel(contents)
@@ -401,7 +401,7 @@ func TestOpenAPI_Any(t *testing.T) {
         "properties": {
           "fMap":       { "type": "object", "additionalProperties": { "description": "Test Only." }}
         }
-      },
+      }
 `
 	contents := []byte(openAPISingleMessagePreamble + messageWithBasicTypes + openAPISingleMessageTrailer)
 	model, err := createDocModel(contents)
@@ -434,7 +434,7 @@ func TestOpenAPI_MapString(t *testing.T) {
           "fMapS32":  { "type": "object", "additionalProperties": { "type": "string", "format": "int32" }},
           "fMapS64":  { "type": "object", "additionalProperties": { "type": "string", "format": "int64" }}
         }
-      },
+      }
 `
 	contents := []byte(openAPISingleMessagePreamble + messageWithBasicTypes + openAPISingleMessageTrailer)
 	model, err := createDocModel(contents)
@@ -486,7 +486,7 @@ func TestOpenAPI_MapInteger(t *testing.T) {
           "fMapI32": { "type": "object", "additionalProperties": { "type": "integer", "format": "int32" }},
           "fMapI64": { "type": "object", "additionalProperties": { "type": "integer", "format": "int64" }}
         }
-      },
+      }
 `
 	contents := []byte(openAPISingleMessagePreamble + messageWithBasicTypes + openAPISingleMessageTrailer)
 	model, err := createDocModel(contents)
@@ -1301,7 +1301,7 @@ const openAPISingleMessagePreamble = `
 `
 
 const openAPISingleMessageTrailer = `
-    },
+    }
   },
   "externalDocs": {
     "description": "Find more info here.",

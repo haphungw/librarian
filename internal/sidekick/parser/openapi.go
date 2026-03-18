@@ -17,7 +17,6 @@
 package parser
 
 import (
-	"errors"
 	"fmt"
 	"os"
 	"strings"
@@ -55,9 +54,9 @@ func createDocModel(contents []byte) (*libopenapi.DocumentModel[v3.Document], er
 	if err != nil {
 		return nil, err
 	}
-	docModel, errs := document.BuildV3Model()
-	if len(errs) > 0 {
-		return nil, fmt.Errorf("cannot convert document to OpenAPI V3 model: %w", errors.Join(errs...))
+	docModel, err := document.BuildV3Model()
+	if err != nil {
+		return nil, fmt.Errorf("cannot convert document to OpenAPI V3 model: %w", err)
 	}
 	return docModel, nil
 }
