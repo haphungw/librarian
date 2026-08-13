@@ -47,7 +47,7 @@ func TestAnnotateMethodNames(t *testing.T) {
 				Name:                "r#move",
 				NameNoMangling:      "move",
 				BuilderName:         "Move",
-				Body:                "None::<gaxi::http::NoBody>",
+				Body:                "None::<wkt::Empty>",
 				ServiceNameToPascal: "ResourceService",
 				ServiceNameToCamel:  "resourceService",
 				ServiceNameToSnake:  "resource_service",
