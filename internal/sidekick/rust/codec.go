@@ -768,13 +768,7 @@ func (c *codec) fullyQualifiedEnumValueName(v *api.EnumValue, sourceSpecificatio
 
 func bodyAccessor(m *api.Method) string {
 	if m.PathInfo.BodyFieldPath == "" {
-		for _, binding := range m.PathInfo.Bindings {
-			verb := strings.ToUpper(binding.Verb)
-			if verb == "POST" || verb == "PUT" || verb == "PATCH" {
-				return "None::<wkt::Empty>"
-			}
-		}
-		return "None::<gaxi::http::NoBody>"
+		return "None::<wkt::Empty>"
 	}
 	if m.PathInfo.BodyFieldPath == "*" {
 		// use the whole request
